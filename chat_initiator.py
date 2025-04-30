@@ -20,9 +20,10 @@ def display_users():
     peers = load_peers()
     now = time.time()
     for ip, info in peers.items():
-        if now - info["last_seen"] <= 900:  # 15 dakika
-            status = "Online" if now - info["last_seen"] <= 10 else "Away"
-            print(f"{info['username']} ({ip}) - {status}")
+        last_seen = now - info["last_seen"]
+        status = "Online" if last_seen <= 900 else "Away"
+        print(f"{info['username']} ({ip}) - {status}")
+
 
 def initiate_chat():
     peers = load_peers()
