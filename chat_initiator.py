@@ -36,7 +36,7 @@ def initiate_chat():
 
     if not target_ip:
         print("Kullanıcı bulunamadı.")
-        returna
+        return
 
     secure = input("Secure chat mi? (e/h): ").strip().lower() == "e"
 
@@ -45,19 +45,26 @@ def initiate_chat():
         conn.connect((target_ip, 6001))
     except:
         print("Bağlantı kurulamadı.")
-        return
+        return   
 
     if secure:
-        private_key = diffie_hellman_generate_private_key()
-        public_key = diffie_hellman_generate_public_key(private_key)
+        try:
+            user_input = input("Lütfen bir integer key girin: ").strip()
+            private_key = int(user_input)
+            public_key = diffie_hellman_generate_public_key(private_key)
 
-        conn.send(json.dumps({"key": str(public_key)}).encode())
-        data = conn.recv(4096)
-        message_info = json.loads(data.decode())
-        received_key = int(message_info["key"])
-        shared_secret = diffie_hellman_generate_shared_secret(received_key, private_key)
-        shared_key = (str(shared_secret).zfill(8))[:8].encode()
-        print("Güvenli bağlantı kuruldu.")
+            conn.send(json.dumps({"key": str(public_key)}).encode())
+
+            data = conn.recv(4096)
+            message_info = json.loads(data.decode())
+            received_key = int(message_info["key"])
+
+            shared_secret = diffie_hellman_generate_shared_secret(received_key, private_key)
+            shared_key = (str(shared_secret).zfill(8))[:8].encode()
+            print("Güvenli bağlantı kuruldu.")
+        except Exception as e:
+            print("Anahtar kurulum hatası:", e)
+            return
 
     message = input("Mesajın: ")
 
@@ -67,7 +74,7 @@ def initiate_chat():
     else:
         conn.send(json.dumps({"unencryptedmessage": message}).encode())
 
-    log_message("SENT", target_ip, message)
+    log_message("SENT ", target_ip, message)
     conn.close()
 
 def display_history():
