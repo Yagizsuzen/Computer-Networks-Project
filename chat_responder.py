@@ -44,7 +44,7 @@ def handle_client(conn, addr):
 
                 elif "unencrypted_message" in message_info:
                     print(f"[Open] {addr}: {message_info['unencrypted_message']}")
-                    log_message("RECEIVED", addr[0], message_info["unencryptedmessage"])
+                    log_message("RECEIVED", addr[0], message_info["unencrypted_message"])
 
             except Exception as e:
                 print(f"Error handling message: {e}")
