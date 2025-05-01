@@ -37,13 +37,13 @@ def handle_client(conn, addr):
                     shared_key = (str(shared_secret).zfill(8))[:8].encode()
                     print(f"Secure channel established with {addr}")
 
-                elif "encryptedmessage" in message_info:
-                    decrypted = decrypt_message(shared_key, message_info["encryptedmessage"])
+                elif "encrypted_message" in message_info:
+                    decrypted = decrypt_message(shared_key, message_info["encrypted_message"])
                     print(f"[Secure] {addr}: {decrypted}")
                     log_message("RECEIVED", addr[0], decrypted)
 
-                elif "unencryptedmessage" in message_info:
-                    print(f"[Open] {addr}: {message_info['unencryptedmessage']}")
+                elif "unencrypted_message" in message_info:
+                    print(f"[Open] {addr}: {message_info['unencrypted_message']}")
                     log_message("RECEIVED", addr[0], message_info["unencryptedmessage"])
 
             except Exception as e:
