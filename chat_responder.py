@@ -38,7 +38,7 @@ def handle_client(conn, addr):
                     print(f"Secure channel established with {addr}")
 
                 elif "encrypted_message" in message_info:
-                    decrypted = decrypt_message(shared_key, message_info["encrypted_message"])
+                    decrypted = decryptmessage(shared_key, message_info["encrypted_message"])
                     print(f"[Secure] {addr}: {decrypted}")
                     log_message("RECEIVED", addr[0], decrypted)
 
