@@ -70,7 +70,7 @@ def initiate_chat():
     message = input("Mesajın: ")
 
     if secure:
-        encrypted = encryptmessage(shared_key, message)
+        encrypted = encrypt_message(shared_key, message)
         conn.send(json.dumps({"encrypted_message": encrypted}).encode())
     else:
         conn.send(json.dumps({"unencrypted_message": message}).encode())
