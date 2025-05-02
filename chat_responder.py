@@ -33,8 +33,8 @@ def handle_client(conn, addr):
                 if "key" in message_info:
                     received_key = int(message_info["key"])
                     shared_secret = diffie_hellman_generate_shared_secret(received_key, private_key)
+                    shared_key = (str(shared_secret).zfill(8))[:8].encode().ljust(24, b"\0")
                     conn.send(json.dumps({"key": public_key}).encode())
-                    shared_key = (str(shared_secret).zfill(8))[:8].encode()
                     print(f"Secure channel established with {addr}")
 
                 elif "encrypted_message" in message_info:
@@ -55,3 +55,4 @@ def handle_client(conn, addr):
 while True:
     conn, addr = server.accept()
     threading.Thread(target=handle_client, args=(conn, addr)).start()
+
