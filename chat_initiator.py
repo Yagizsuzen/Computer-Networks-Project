@@ -24,7 +24,6 @@ def display_users():
         status = "Online" if last_seen <= 900 else "Away"
         print(f"{info['username']} ({ip}) - {status}")
 
-
 def initiate_chat():
     peers = load_peers()
     target_username = input("Kiminle konuşmak istiyorsun?: ").strip()
@@ -61,7 +60,7 @@ def initiate_chat():
             received_key = int(message_info["key"])
 
             shared_secret = diffie_hellman_generate_shared_secret(received_key, private_key)
-            shared_key = (str(shared_secret).zfill(8))[:8].encode()
+            shared_key = (str(shared_secret).zfill(8))[:8].encode().ljust(24, b"\0")
             print("Güvenli bağlantı kuruldu.")
         except Exception as e:
             print("Anahtar kurulum hatası:", e)
@@ -100,3 +99,4 @@ while True:
         break
     else:
         print("Geçersiz seçim.")
+
